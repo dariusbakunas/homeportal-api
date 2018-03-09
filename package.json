@@ -1,0 +1,20 @@
+{
+  "name": "libvirt-api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Express libvirt API",
+  "author": "Darius Bakunas-Milanowski <bakunas@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev-docker": "../node_modules/nodemon/bin/nodemon.js --debug=5858",
+    "dev-host": "nodemon --debug=5858"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

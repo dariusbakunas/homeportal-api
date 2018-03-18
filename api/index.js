@@ -2,9 +2,9 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import { LibVirtConnector } from './api/libvirt/connector';
-import { Domains } from './api/libvirt/models';
-import schema from './api/schema';
+import { LibVirtConnector } from './libvirt/connector';
+import { Domains } from './libvirt/models';
+import schema from './schema';
 
 if (!process.env.LIBVIRT_API_ROOT) {
     require('dotenv').config();

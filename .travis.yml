@@ -6,6 +6,8 @@ services:
 cache:
   directories:
     - "node_modules"
+script:
+  - npm run build
 before_deploy:
   - docker build -t dariusbakunas/homeportal-api .
 deploy:

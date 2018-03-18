@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-docker push dariusbakunas/home-api
+docker push dariusbakunas/homeportal-api

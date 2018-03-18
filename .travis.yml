@@ -7,7 +7,7 @@ cache:
   directories:
     - "node_modules"
 before_deploy:
-  - docker build -t dariusbakunas/home-api .
+  - docker build -t dariusbakunas/homeportal-api .
 deploy:
   provider: script
   script: ./scripts/deploy.sh

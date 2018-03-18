@@ -7,6 +7,7 @@ ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
 # default to port 80 for node
+ARG PORT=80
 ENV PORT $PORT
 EXPOSE $PORT
 

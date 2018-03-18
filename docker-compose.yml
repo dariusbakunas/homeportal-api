@@ -2,9 +2,11 @@ version: '3'
 services:
   home_api:
     image: dariusbakunas/homeportal-api:latest
-    container_name: home-api
+    container_name: homeportal-api
     ports:
-      - "9999:80"
+      - "9990:80"
+    environment:
+      - NODE_ENV=production
     env_file:
       - .env
     volumes:

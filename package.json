@@ -1,8 +1,8 @@
 {
-  "name": "libvirt-api",
+  "name": "homeportal-api",
   "private": true,
   "version": "1.0.0",
-  "description": "Express libvirt API",
+  "description": "GraphQL server for homeportal",
   "author": "Darius Bakunas-Milanowski <bakunas@gmail.com>",
   "main": "index.js",
   "scripts": {

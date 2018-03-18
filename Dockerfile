@@ -5,6 +5,7 @@ RUN mkdir -p /opt/app
 # defaults to production, compose overrides this to development on build and run
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 # default to port 80 for node
 ARG PORT=80
@@ -18,11 +19,18 @@ HEALTHCHECK CMD curl -fs http://localhost:$PORT/healthz || exit 1
 WORKDIR /opt
 COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
+RUN npm install -g babel-cli
 ENV PATH /opt/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
 WORKDIR /opt/app
 COPY . /opt/app
+
+# Add Tini
+ENV TINI_VERSION v0.17.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
 
 # if you want to use npm start instead, then use `docker run --init in production`
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals

@@ -41,7 +41,9 @@ app.use('/graphql', graphqlExpress((req) => {
         schema,
         context: {
             Domains: new Domains({ connector: libvirtConnector })
-        }
+        },
+        tracing: true,
+        cacheControl: true
     };
 }));
 

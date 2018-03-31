@@ -2,6 +2,8 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import io from 'socket.io-client';
+import { PubSub } from 'graphql-subscriptions';
 import { LibVirtConnector } from './libvirt/connector';
 import { Domains } from './libvirt/models';
 import schema from './schema';
@@ -24,6 +26,20 @@ app.use(morgan('common'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+const socket = io('http://localhost:5555/libvirt');
+
+socket.on('connect', () => {
+    console.log('Websocket connected');
+});
+
+socket.on('libvirt_event', (data) => {
+    console.log('Received event: ', data);
+});
+
+socket.on('disconnect', () => {
+    console.log('Websocket disconnected');
+});
 
 //{ schema: executableSchema }
 app.use('/graphql', graphqlExpress((req) => {

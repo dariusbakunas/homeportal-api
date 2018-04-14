@@ -22,7 +22,9 @@
     "morgan": "^1.8.1",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "subscriptions-transport-ws": "^0.9.7",
+    "ws": "^5.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",

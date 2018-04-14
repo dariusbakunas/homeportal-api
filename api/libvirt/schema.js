@@ -5,4 +5,10 @@ export const schema = [`
         isActive: Boolean!
         uuid: String!
     }
+    
+    type LibvirtEvent {
+        uuid: String!
+        event: String!
+        detail: String!
+    }
 `];

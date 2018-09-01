@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { makeExecutableSchema } from 'graphql-tools';
 import { schema as libvirtSchema } from './libvirt/schema';
-import { pubsub, LIBVIRT_EVENT } from "./libvirt/events";
+import { pubsub, LIBVIRT_EVENT } from './libvirt/events';
 
 const rootSchema = [`
     type Query {

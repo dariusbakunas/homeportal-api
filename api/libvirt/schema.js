@@ -1,8 +1,8 @@
 export const schema = [`
     type Domain {
-        id: Int!
+        id: Int
         name: String!
-        isActive: Boolean!
+        state: String!
         uuid: String!
     }
     

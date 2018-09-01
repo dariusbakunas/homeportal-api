@@ -2,8 +2,6 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import io from 'socket.io-client';
-import { PubSub } from 'graphql-subscriptions';
 import { LibVirtConnector } from './libvirt/connector';
 import { Domains } from './libvirt/models';
 import schema from './schema';
@@ -14,9 +12,9 @@ if (!process.env.LIBVIRT_API_ROOT) {
 
 // Constants
 const PORT = process.env.PORT || 8080;
-// if you're not using docker-compose for local development, this will default to 8080
-// to prevent non-root permission problems with 80. Dockerfile is set to make this 80
-// because containers don't have that issue :)
+// if you're not using docker-compose for local development,
+// this will default to 8080 to prevent non-root permission problems with 80.
+// Dockerfile is set to make this 80 because containers don't have that issue :)
 
 
 // App
@@ -27,19 +25,44 @@ app.use(morgan('common'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const socket = io('http://localhost:5555/libvirt');
+// const socket = io(`${process.env.LIBVIRT_API_ROOT}/libvirt`);
+//
+// socket.on('connect', () => {
+//     console.log('Websocket connected');
+// });
+//
+// socket.on('libvirt-event', (data) => {
+//     // pubsub.publish(LIBVIRT_EVENT, { libvirtEvent: data });
+//     console.log('Received event: ', data);
+// });
+//
+// socket.on('disconnect', () => {
+//     console.log('Websocket disconnected');
+// });
+//
+// // Create WebSocket listener server
+// const websocketServer = createServer((request, response) => {
+//     response.writeHead(404);
+//     response.end();
+// });
+//
+// // Bind it to port and start listening
+// websocketServer.listen(process.env.WS_PORT, () => console.log(
+//     `Websocket Server is now running on
+// http://localhost:${process.env.WS_PORT}`
+// ));
 
-socket.on('connect', () => {
-    console.log('Websocket connected');
-});
-
-socket.on('libvirt_event', (data) => {
-    console.log('Received event: ', data);
-});
-
-socket.on('disconnect', () => {
-    console.log('Websocket disconnected');
-});
+// const subscriptionServer = SubscriptionServer.create(
+//     {
+//         schema,
+//         execute,
+//         subscribe,
+//     },
+//     {
+//         server: websocketServer,
+//         path: '/graphql',
+//     },
+// );
 
 //{ schema: executableSchema }
 app.use('/graphql', graphqlExpress((req) => {
@@ -51,32 +74,36 @@ app.use('/graphql', graphqlExpress((req) => {
         throw new Error('Query too large.');
     }
 
-    const libvirtConnector = new LibVirtConnector(process.env.LIBVIRT_API_ROOT);
+    const apiRoot = process.env.LIBVIRT_API_ROOT;
+    const apiBasePath = process.env.LIBVIRT_API_BASE_PATH;
+
+    const libvirtConnector = new LibVirtConnector(`${apiRoot}${apiBasePath}`);
 
     return {
         schema,
         context: {
             Domains: new Domains({ connector: libvirtConnector })
         },
-        tracing: true,
-        cacheControl: true
+        // tracing: true,
+        // cacheControl: true
     };
 }));
 
 app.use('/graphiql', graphiqlExpress({
     endpointURL: '/graphql',
-    query: `{
-    domains {
-      id
-      name
-    }   
-}`,}));
+    subscriptionsEndpoint: `ws://localhost:${process.env.WS_PORT}/graphql`,
+    query: `
+    {
+        domains {
+          id
+          name
+        }   
+    }
+    `,
+}));
 
 
 app.get('/healthz', function (req, res) {
-    // do app logic here to determine if app is truly healthy
-    // you should return 200 if healthy, and anything else will fail
-    // if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
     res.send('I am happy and healthy\n');
 });
 
@@ -85,25 +112,17 @@ const server = app.listen(PORT, function () {
 });
 
 
-//
-// need this in docker container to properly exit since node doesn't handle SIGINT/SIGTERM
-// this also won't work on using npm start since:
-// https://github.com/npm/npm/issues/4603
-// https://github.com/npm/npm/pull/10868
-// https://github.com/RisingStack/kubernetes-graceful-shutdown-example/blob/master/src/index.js
-// if you want to use npm then start with `docker run --init` to help, but I still don't think it's
-// a graceful shutdown of node process
-//
-
 // quit on ctrl-c when running docker in terminal
 process.on('SIGINT', function onSigint () {
-    console.info('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ', new Date().toISOString());
+    console.info('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ',
+        new Date().toISOString());
     shutdown();
 });
 
 // quit properly on docker stop
 process.on('SIGTERM', function onSigterm () {
-    console.info('Got SIGTERM (docker container stop). Graceful shutdown ', new Date().toISOString());
+    console.info('Got SIGTERM (docker container stop). Graceful shutdown ',
+        new Date().toISOString());
     shutdown();
 });
 
@@ -115,7 +134,7 @@ function shutdown() {
             process.exitCode = 1;
         }
         process.exit();
-    })
+    });
 }
 //
 // need above in docker container to properly exit

@@ -4,7 +4,7 @@ export class Domains {
     }
 
     getAll = () => {
-        return this.connector.get(`/domain`);
+        return this.connector.get('/domains');
     };
 
     getByUUID = (uuid) => {

@@ -25,45 +25,6 @@ app.use(morgan('common'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// const socket = io(`${process.env.LIBVIRT_API_ROOT}/libvirt`);
-//
-// socket.on('connect', () => {
-//     console.log('Websocket connected');
-// });
-//
-// socket.on('libvirt-event', (data) => {
-//     // pubsub.publish(LIBVIRT_EVENT, { libvirtEvent: data });
-//     console.log('Received event: ', data);
-// });
-//
-// socket.on('disconnect', () => {
-//     console.log('Websocket disconnected');
-// });
-//
-// // Create WebSocket listener server
-// const websocketServer = createServer((request, response) => {
-//     response.writeHead(404);
-//     response.end();
-// });
-//
-// // Bind it to port and start listening
-// websocketServer.listen(process.env.WS_PORT, () => console.log(
-//     `Websocket Server is now running on
-// http://localhost:${process.env.WS_PORT}`
-// ));
-
-// const subscriptionServer = SubscriptionServer.create(
-//     {
-//         schema,
-//         execute,
-//         subscribe,
-//     },
-//     {
-//         server: websocketServer,
-//         path: '/graphql',
-//     },
-// );
-
 //{ schema: executableSchema }
 app.use('/graphql', graphqlExpress((req) => {
     const query = req.query.query || req.body.query;

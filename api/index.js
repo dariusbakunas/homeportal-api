@@ -1,4 +1,5 @@
 const fs = require('fs');
+const console = require('console');
 const { ApolloServer, gql } = require('apollo-server');
 
 if (!process.env.LIBVIRT_API_ROOT) {
@@ -10,7 +11,9 @@ const LibvirtAPI = require('./libvirtApi');
 // Constants
 const PORT = process.env.PORT || 8080;
 
-const typeDefs = gql`${fs.readFileSync(__dirname.concat('/schema.graphql'), 'utf8')}`;
+const schema = fs.readFileSync(__dirname.concat('/schema.graphql'), 'utf8');
+
+const typeDefs = gql`${schema}`;
 
 const resolvers = {
     Query: {

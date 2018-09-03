@@ -7,9 +7,11 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon api/index.js",
-    "build": "babel api -d dist",
-    "serve": "node dist/index.js",
+    "serve": "node api/index.js",
     "lint": "eslint --ignore-path .gitignore ."
+  },
+  "engines": {
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "apollo-datasource-rest": "^0.1.4",
@@ -28,15 +30,8 @@
     "ws": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/cli": " ^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.42",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.39",
-    "@babel/preset-env": "^7.0.0-beta.42",
-    "@babel/register": "^7.0.0",
-    "babel-eslint": "^9.0.0",
     "eslint": "^5.5.0",
+    "eslint-plugin-node": "^7.0.1",
     "nodemon": "^1.11.0"
   }
 }

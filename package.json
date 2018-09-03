@@ -6,15 +6,15 @@
   "author": "Darius Bakunas-Milanowski <bakunas@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon api/index.js --exec babel-node --inspect=5858",
+    "start": "nodemon api/index.js",
     "build": "babel api -d dist",
     "serve": "node dist/index.js",
     "lint": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
+    "apollo-datasource-rest": "^0.1.4",
     "apollo-engine": "^1.0.3",
-    "apollo-server-express": "^2.0.4",
-    "dataloader": "^1.4.0",
+    "apollo-server": "^2.0.5",
     "dotenv": "^6.0.0",
     "express": "^4.14.1",
     "graphql": "^14.0.0",
@@ -34,6 +34,7 @@
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.42",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.39",
     "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/register": "^7.0.0",
     "babel-eslint": "^9.0.0",
     "eslint": "^5.5.0",
     "nodemon": "^1.11.0"

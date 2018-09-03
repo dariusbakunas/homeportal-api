@@ -1,0 +1,10 @@
+type Domain {
+    id: Int
+    name: String!
+    state: String!
+    uuid: String!
+}
+
+type Query {
+    domains: [Domain]
+}

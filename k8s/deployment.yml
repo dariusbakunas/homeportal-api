@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: homeportal-api
+  name: homeportal-api
+  namespace: ${BRANCH_NAME}
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: homeportal-api
+        tier: backend
+    spec:
+      containers:
+      - env:
+        - name: LOG_LEVEL
+          value: info
+        - name: LIBVIRT_API_ROOT
+          value: http://xen.local.geekspace.us:8888
+        image: dariusbakunas/homeportal-api:${BRANCH_NAME}
+        name: homeportal-api
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1024Mi

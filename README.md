@@ -1,6 +1,6 @@
 # GraphQL server for my homeportal web app
 
-[![Build Status](https://travis-ci.org/dariusbakunas/homeportal-api.svg?branch=master)](https://travis-ci.org/dariusbakunas/homeportal-api) 
+[![Build Status](https://travis-ci.org/dariusbakunas/homeportal-api.svg?branch=master)](https://travis-ci.org/dariusbakunas/homeportal-api)
 
 *This is used by my [homeportal](https://github.com/dariusbakunas/homeportal) project*
 
@@ -11,9 +11,9 @@
     ```bash
     LIBVIRT_API_ROOT = 'http://...'
     ```
-    
+
 * Start server:
-    
+
     ```bash
-    % npm run dev-host
+    % npm start
     ```

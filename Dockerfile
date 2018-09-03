@@ -32,5 +32,5 @@ COPY --from=dependencies /root/app/node_modules ./node_modules
 # copy app sources
 COPY --from=test /root/app/api ./api
 # expose port and define CMD
-EXPOSE 5000
+EXPOSE 8080
 CMD npm run serve

@@ -11,12 +11,12 @@
     "lint": "eslint --ignore-path .gitignore ."
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=9"
   },
   "dependencies": {
     "apollo-datasource-rest": "^0.1.4",
     "apollo-engine": "^1.0.3",
-    "apollo-server": "^2.0.5",
+    "apollo-server-express": "^2.0.5",
     "dotenv": "^6.0.0",
     "express": "^4.14.1",
     "graphql": "^14.0.0",

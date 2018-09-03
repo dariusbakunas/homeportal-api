@@ -21,7 +21,7 @@ RUN npm install
 # run linters, build and tests
 FROM dependencies AS test
 COPY . .
-RUN  npm run lint && npm run build && npm run test
+RUN  npm run lint && npm run test
 RUN npm prune --production
 
 #
@@ -30,7 +30,7 @@ FROM base AS release
 # copy production node_modules
 COPY --from=dependencies /root/app/node_modules ./node_modules
 # copy app sources
-COPY --from=test /root/app/dist ./dist
+COPY --from=test /root/app/api ./api
 # expose port and define CMD
 EXPOSE 5000
 CMD npm run serve

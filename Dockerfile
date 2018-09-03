@@ -7,7 +7,7 @@ WORKDIR /root/app
 # Set tini as entrypoint
 ENTRYPOINT ["/sbin/tini", "--"]
 # copy project file
-COPY .eslintrc .babelrc package.json ./
+COPY .eslintrc package.json ./
 
 #
 # ---- Dependencies ----

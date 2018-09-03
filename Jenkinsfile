@@ -7,7 +7,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t dariusbakunas/homeportal-api:${env.BRANCH_NAME}"
+                    sh "docker build -t dariusbakunas/homeportal-api:${env.BRANCH_NAME} ."
                 }
             }
         }

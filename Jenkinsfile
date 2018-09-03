@@ -27,6 +27,7 @@ pipeline {
                 sh 'scp *.yml jenkins@kube-master-1.local.geekspace.us:~'
                 sh 'ssh -t jenkins@kube-master-1.local.geekspace.us "/usr/bin/kubectl get secret regcred --namespace=default --export -o yaml | /usr/bin/kubectl apply --namespace=${BRANCH_NAME} -f -"'
                 sh 'ssh -t jenkins@kube-master-1.local.geekspace.us /usr/bin/kubectl apply -f deployment.yml'
+                sh "ssh -t jenkins@kube-master-1.local.geekspace.us /usr/bin/kubectl rollout status deploy/homeportal-api --namespace=${env.BRANCH_NAME}"
             }
         }
     }

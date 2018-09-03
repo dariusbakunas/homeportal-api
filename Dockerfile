@@ -28,9 +28,9 @@ RUN npm prune --production
 # ---- Release ----
 FROM base AS release
 # copy production node_modules
-COPY --from=1 /root/app/node_modules ./node_modules
+COPY --from=dependencies /root/app/node_modules ./node_modules
 # copy app sources
-COPY --from=2 /root/app/api ./api
+COPY --from=test /root/app/api ./api
 # expose port and define CMD
 EXPOSE 8080
 CMD npm run serve

@@ -7,15 +7,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    app = docker.build("dariusbakunas/homeportal-api:${env.BRANCH_NAME}")
+                    sh "docker build -t dariusbakunas/homeportal-api:${env.BRANCH_NAME}"
                 }
             }
         }
         stage('Push image') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: 'docker-hub-credentials', url: "https://index.docker.io/v1/"]) {
-                        app.push()
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        sh "docker login --password=${PASSWORD} --username=${USERNAME}"
+                        sh "docker push dariusbakunas/homeportal-api:${env.BRANCH_NAME}"
                     }
                 }
             }

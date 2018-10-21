@@ -1,6 +1,9 @@
 const fs = require('fs');
 const express = require('express');
 const console = require('console');
+const morgan = require('morgan');
+const path = require('path');
+const winston = require('winston');
 const { ApolloServer, gql } = require('apollo-server-express');
 
 if (!process.env.LIBVIRT_API_ROOT) {
@@ -26,7 +29,9 @@ const resolvers = {
 };
 
 const apiRoot = process.env.LIBVIRT_API_ROOT;
-const apiBasePath = process.env.LIBVIRT_API_BASE_PATH;
+const apiBasePath = process.env.LIBVIRT_API_BASE_PATH || '';
+
+app.use(morgan('combined'));
 
 app.get('/healthz', function (req, res, next) {
     res.sendStatus(200);
@@ -37,17 +42,31 @@ const server = new ApolloServer(
         typeDefs,
         resolvers,
         dataSources: () => ({
-                libvirtAPI: new LibvirtAPI(`${apiRoot}${apiBasePath}`),
+                libvirtAPI: new LibvirtAPI(path.join(apiRoot, apiBasePath)),
         })
     }
 );
 
 server.applyMiddleware({ app });
 
-process.on('SIGTERM', () => {
-    server.close()
-        .then(() => process.exit(0))
-        .catch(() => process.exit(-1));
+const signals = {
+    'SIGHUP': 1,
+    'SIGINT': 2,
+    'SIGTERM': 15
+};
+
+const shutdown = (signal, value) => {
+    app.close(() => {
+        winston.info(`server stopped by ${signal} with value ${value}`);
+        process.exit(128 + value);
+    });
+};
+
+Object.keys(signals).forEach((signal) => {
+    process.on(signal, () => {
+        console.log(`process received a ${signal} signal`);
+        shutdown(signal, signals[signal]);
+    });
 });
 
 const serverURL = `http://localhost:${PORT}${server.graphqlPath}`;

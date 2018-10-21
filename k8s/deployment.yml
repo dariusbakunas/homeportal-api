@@ -22,6 +22,7 @@ spec:
         - name: LIBVIRT_API_ROOT
           value: http://xen.local.geekspace.us:8888
         image: dariusbakunas/homeportal-api:${BRANCH_NAME}
+        imagePullPolicy: Always
         name: homeportal-api
         ports:
         - containerPort: 8080
@@ -50,3 +51,17 @@ spec:
           requests:
             cpu: 100m
             memory: 1024Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeportal-api
+  namespace: ${BRANCH_NAME}
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: homeportal-api
+    tier: backend

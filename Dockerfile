@@ -1,13 +1,12 @@
 # ---- Base Node ----
-FROM alpine:3.5 AS base
-# install node
-RUN apk add --no-cache nodejs-current tini
+FROM mhart/alpine-node:9 AS base
+RUN apk add --no-cache tini
 # set working directory
 WORKDIR /root/app
 # Set tini as entrypoint
 ENTRYPOINT ["/sbin/tini", "--"]
 # copy project file
-COPY .eslintrc .babelrc package.json ./
+COPY .eslintrc package.json ./
 
 #
 # ---- Dependencies ----

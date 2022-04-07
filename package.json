@@ -27,7 +27,7 @@
     "request-promise": "^4.2.2",
     "socket.io": "^2.0.4",
     "subscriptions-transport-ws": "^0.9.7",
-    "winston": "^3.0.0",
+    "winston": "^3.3.0",
     "ws": "^6.0.0"
   },
   "devDependencies": {
